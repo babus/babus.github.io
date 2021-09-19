@@ -1278,11 +1278,11 @@ button {
   -moz-background-size: cover;
   -o-background-size: cover;
   background: url("../../images/bg-main.jpg") no-repeat center center fixed;
-  background-size: contain;
+  background-size: cover;
   -moz-filter: brightness(35%) blur(0.07rem);
   -webkit-filter: brightness(35%) blur(0.07rem);
   -ms-filter: brightness(35%) blur(0.07rem);
-  filter: brightness(40%) blur(0.1rem);
+  filter: brightness(35%) blur(0.1rem);
   z-index: 1;
 }
 
@@ -1294,7 +1294,7 @@ body.is-article-visible #bg:after {
   -moz-filter: brightness(35%) blur(0.15rem);
   -webkit-filter: brightness(35%) blur(0.15rem);
   -ms-filter: brightness(35%) blur(0.15rem);
-  filter: brightness(40%) blur(0.2rem);
+  filter: brightness(35%) blur(0.2rem);
 }
 
 body.is-preload #bg:before {
