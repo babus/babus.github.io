@@ -52,15 +52,15 @@ desktop is deliberately untouched.
 | Fix | Why |
 |---|---|
 | Header pill padding → symmetric `16px` | Ships as `20px` left / `12px` right, tuned for the desktop row where the rounded CTA sits flush at the pill's rounded end. Once the row wraps on mobile the CTA moves left and that 8px difference reads as the whole header being off-centre. |
+| Header nav links hidden | The anchor links render ~15px tall, far under the 44px minimum tap target, and wrap onto their own row — which is what made the header three rows deep. Hiding them collapses it to a single row: wordmark left, CTA right. Nothing is lost; every section they point at is on this one page, below. |
 | Section eyebrow gets its own row | "01 — Work" etc. share a wrapping flex row with the heading under `justify-content: space-between`. When the pair fits, the eyebrow is pushed hard right; when it doesn't, it wraps hard left — so it landed differently in each section. |
 
 ## Known, not fixed
 
-The nav links in the header (`PRODUCTS`, `METHOD`, `TRACK RECORD`, `STACK`) are
-~15px tall on mobile, well under the 44px minimum tap target, and wrap to their
-own row. Fixing this properly means a design decision — hide them on small
-screens, or give them a real menu — so it belongs in the design source, not in
-a patch here.
+The header CTA ("Work with me") is 37px tall on mobile — still under the 44px
+minimum tap target, though close enough to hit reliably. Bumping it is a
+one-line `min-height`, but it changes a deliberately proportioned button, so
+it belongs in the design source rather than in a patch here.
 
 ## Deploying
 
