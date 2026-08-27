@@ -23,7 +23,7 @@ the bundle from source and re-apply the metadata patch (see below).
 
 ## Patches applied on top of the bundle
 
-Three fixes live on top of the generated file. **If you regenerate `index.html`,
+Four changes live on top of the generated file. **If you regenerate `index.html`,
 re-apply all three** — otherwise each regression comes back silently.
 
 ### 1. Metadata (both heads)
@@ -54,6 +54,15 @@ desktop is deliberately untouched.
 | Header pill padding → symmetric `16px` | Ships as `20px` left / `12px` right, tuned for the desktop row where the rounded CTA sits flush at the pill's rounded end. Once the row wraps on mobile the CTA moves left and that 8px difference reads as the whole header being off-centre. |
 | Header nav links hidden | The anchor links render ~15px tall, far under the 44px minimum tap target, and wrap onto their own row — which is what made the header three rows deep. Hiding them collapses it to a single row: wordmark left, CTA right. Nothing is lost; every section they point at is on this one page, below. |
 | Section eyebrow gets its own row | "01 — Work" etc. share a wrapping flex row with the heading under `justify-content: space-between`. When the pair fits, the eyebrow is pushed hard right; when it doesn't, it wraps hard left — so it landed differently in each section. |
+
+### 4. Night Drive section
+
+Adds section `05 — Off the clock` between Stack and Contact, linking the
+[Trivandrum Night Drive](https://github.com/babus/trivandrum-night-drive) — a
+separate repo served as a project page under the same domain. Contact renumbers
+from 05 to 06, and a `#drive` link joins the header nav. The card reuses the
+product-card markup so it stays native to the design, and the section eyebrow
+follows the same `h2 + div` pattern, so the mobile rule above already covers it.
 
 ## Known, not fixed
 
