@@ -21,18 +21,46 @@ the bundle from source and re-apply the metadata patch (see below).
 | `favicon.svg` | Browser tab icon |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is, no Jekyll processing |
 
-## Metadata patch
+## Patches applied on top of the bundle
+
+Three fixes live on top of the generated file. **If you regenerate `index.html`,
+re-apply all three** — otherwise each regression comes back silently.
+
+### 1. Metadata (both heads)
 
 The bundler emits `<title>Bundled Page</title>` and no meta tags, and the inner
 template it unpacks carries no `<title>` at all — so after unpacking the tab
-title would go empty. Both heads are patched to carry the real title,
-description, canonical URL, favicon, and Open Graph / Twitter card tags:
+title would go empty. Both heads carry the real title, description, canonical
+URL, favicon, and Open Graph / Twitter card tags:
 
 - the **outer** head is what crawlers and link unfurlers see (they don't run JS)
 - the **inner** template head is what the browser shows once the bundle unpacks
 
-If you regenerate `index.html`, re-apply that patch or the tab title and every
-link preview break.
+### 2. Contact résumé link
+
+The "Résumé (PDF)" button in the contact section was copy-pasted from the
+"Message me on LinkedIn" button next to it and its `href` was never changed, so
+it sent people to LinkedIn. Fixed to point at the PDF. **This one should also be
+fixed in the design source** — otherwise the next export reintroduces it.
+
+### 3. Mobile alignment
+
+A `<style data-patch="mobile-alignment">` block in the template head, scoped to
+`max-width: 640px`. Both rules override inline styles, hence `!important`;
+desktop is deliberately untouched.
+
+| Fix | Why |
+|---|---|
+| Header pill padding → symmetric `16px` | Ships as `20px` left / `12px` right, tuned for the desktop row where the rounded CTA sits flush at the pill's rounded end. Once the row wraps on mobile the CTA moves left and that 8px difference reads as the whole header being off-centre. |
+| Section eyebrow gets its own row | "01 — Work" etc. share a wrapping flex row with the heading under `justify-content: space-between`. When the pair fits, the eyebrow is pushed hard right; when it doesn't, it wraps hard left — so it landed differently in each section. |
+
+## Known, not fixed
+
+The nav links in the header (`PRODUCTS`, `METHOD`, `TRACK RECORD`, `STACK`) are
+~15px tall on mobile, well under the 44px minimum tap target, and wrap to their
+own row. Fixing this properly means a design decision — hide them on small
+screens, or give them a real menu — so it belongs in the design source, not in
+a patch here.
 
 ## Deploying
 
