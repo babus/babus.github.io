@@ -1,6 +1,6 @@
 # babus.github.io
 
-Personal portfolio site — live at <https://babus.github.io/>
+Personal portfolio site — live at <https://babu.work/>
 
 ## How this site is built
 
@@ -23,7 +23,7 @@ the bundle from source and re-apply the metadata patch (see below).
 
 ## Patches applied on top of the bundle
 
-Four changes live on top of the generated file. **If you regenerate `index.html`,
+Five changes live on top of the generated file. **If you regenerate `index.html`,
 re-apply all three** — otherwise each regression comes back silently.
 
 ### 1. Metadata (both heads)
@@ -63,6 +63,32 @@ separate repo served as a project page under the same domain. Contact renumbers
 from 05 to 06, and a `#drive` link joins the header nav. The card reuses the
 product-card markup so it stays native to the design, and the section eyebrow
 follows the same `h2 + div` pattern, so the mobile rule above already covers it.
+
+### 5. SEO fallback and structured data
+
+The bundle unpacks in the browser, so the raw HTML a non-rendering crawler sees
+was 17 characters — `BS Unpacking...`. Two additions in the **outer** document,
+which is the part served as plain HTML:
+
+- A JSON-LD `Person` block in the head. It needs no JS to be read, so it works
+  for every crawler, and it is what feeds name-search rich results.
+- A `<noscript>` block in the body carrying the real headings and copy. The
+  unpacker replaces the whole document, so browsers never see it; crawlers
+  without JS now get 1,560 characters instead of 17. It mirrors the rendered
+  content rather than adding to it — keep the two in step if the copy changes.
+
+`robots.txt` and `sitemap.xml` sit at the repo root alongside them.
+
+## Custom domain
+
+Live at **babu.work** (registered at GoDaddy, DNS there). `CNAME` holds the bare
+domain; the apex has GitHub's four A and four AAAA records, and `www` is a CNAME
+to the apex.
+
+Absolute URLs in `index.html` — `canonical`, `og:url`, `og:image` — point at
+`babu.work` and must be updated together if the domain ever moves again. The
+night drive is a project page on the same host, so it followed automatically to
+`babu.work/trivandrum-night-drive/`.
 
 ## Known, not fixed
 
