@@ -23,7 +23,7 @@ the bundle from source and re-apply the metadata patch (see below).
 
 ## Patches applied on top of the bundle
 
-Five changes live on top of the generated file. **If you regenerate `index.html`,
+Six changes live on top of the generated file. **If you regenerate `index.html`,
 re-apply all three** — otherwise each regression comes back silently.
 
 ### 1. Metadata (both heads)
@@ -78,6 +78,23 @@ which is the part served as plain HTML:
   content rather than adding to it — keep the two in step if the copy changes.
 
 `robots.txt` and `sitemap.xml` sit at the repo root alongside them.
+
+### 6. White flash on first paint
+
+The outer document set a background on `body` but not on `html`. The canvas
+inherits the body background only once body is painted, so every frame before
+that fell back to white — measured as `html` computing to `rgba(0,0,0,0)` for
+the first 285 ms. `html { background: #08080a }` in the outer style fixes it;
+the canvas is now dark from the first paint. The "Unpacking…" chip was also a
+white pill on a black page, so it is dark now too.
+
+A fade-in on the incoming body was tried and **reverted**. The runtime injects
+its stylesheet more than once (3 → 6 `<style>` elements between 137–240 ms) and
+each insertion restarts a CSS animation, so the page faded to 0.45, dropped
+back to 0, then faded in again — a worse flicker than the cut it replaced. A
+JS-triggered class would avoid the restart but strands the page invisible if
+the script ever fails. Not worth it for 400 ms of polish; fix it at the design
+source instead, where the mount lifecycle is controllable.
 
 ## Custom domain
 
