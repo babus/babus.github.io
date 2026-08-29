@@ -79,22 +79,34 @@ which is the part served as plain HTML:
 
 `robots.txt` and `sitemap.xml` sit at the repo root alongside them.
 
-### 6. White flash on first paint
+### 6. White flash and the loading mark
 
-The outer document set a background on `body` but not on `html`. The canvas
-inherits the body background only once body is painted, so every frame before
-that fell back to white — measured as `html` computing to `rgba(0,0,0,0)` for
-the first 285 ms. `html { background: #08080a }` in the outer style fixes it;
-the canvas is now dark from the first paint. The "Unpacking…" chip was also a
-white pill on a black page, so it is dark now too.
+Three separate things, measured rather than guessed:
 
-A fade-in on the incoming body was tried and **reverted**. The runtime injects
-its stylesheet more than once (3 → 6 `<style>` elements between 137–240 ms) and
-each insertion restarts a CSS animation, so the page faded to 0.45, dropped
-back to 0, then faded in again — a worse flicker than the cut it replaced. A
-JS-triggered class would avoid the restart but strands the page invisible if
-the script ever fails. Not worth it for 400 ms of polish; fix it at the design
-source instead, where the mount lifecycle is controllable.
+- **`color-scheme: dark`** on `html` in both documents, plus the matching meta.
+  Before any stylesheet parses, the browser paints its own base canvas — white
+  unless told otherwise. A `background` on `html` cannot reach that frame; only
+  `color-scheme` can. This is the fix for the flash on every reload.
+- **`html { background: #08080a }`** in the outer style. The outer document set a
+  background on `body` only, and the canvas inherits that just once body paints,
+  so a post-paint white window existed too (`html` computed to `rgba(0,0,0,0)`
+  for the first 285 ms).
+- **The loading mark.** The bundler emitted `sc-camel-view-box` instead of
+  `viewBox`, so the SVG never scaled: its 1200×800 user units rendered 1:1 as a
+  420 px lime ring anchored at (600,400) rather than a centred mark. Fixed the
+  attribute and sized it to 132×88 with a slow opacity breathe.
+
+Two things were tried and rejected, both with numbers:
+
+- A fade-in on the incoming body. The runtime injects its stylesheet more than
+  once (3 → 6 `<style>` elements between 137–240 ms) and each insertion restarts
+  a CSS animation, so it faded to 0.45, snapped to 0, then faded in again.
+- Splitting the 750 KB payload into an external file. A stub build a tenth the
+  size painted only 48 ms sooner throttled, 80 ms unthrottled. Not worth losing
+  the single-file property.
+
+Roughly 240 ms of the remaining time-to-first-paint is parse and paint of the
+document and is not addressable from here.
 
 ## Custom domain
 
