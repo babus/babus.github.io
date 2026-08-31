@@ -17,7 +17,7 @@ the bundle from source and re-apply the metadata patch (see below).
 |---|---|
 | `index.html` | The whole site, self-contained (~830 KB) |
 | `Babu-Somasundaram-Resume.pdf` | Linked from the hero and the contact section |
-| `og-image.png` | 1200×630 link-preview card (LinkedIn, Slack, X) |
+| `og-card.png` | 1200×630 link-preview card (LinkedIn, Slack, X). Regenerate from `og.html` in the scratchpad if the copy or domain changes — the domain is drawn into the artwork, not just the meta tags. |
 | `favicon.svg` | Browser tab icon |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is, no Jekyll processing |
 
