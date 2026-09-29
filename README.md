@@ -64,6 +64,18 @@ from 05 to 06, and a `#drive` link joins the header nav. The card reuses the
 product-card markup so it stays native to the design, and the section eyebrow
 follows the same `h2 + div` pattern, so the mobile rule above already covers it.
 
+### 4a. Tamal in Off the clock
+
+Section 05 now holds two cards side by side: the Night Drive and
+[Tamal](https://github.com/babus/tamal), a Chrome extension and web page that
+rewrite Malayalam script as Tamil script. Like the drive, Tamal's web page is a
+project page on the same host, at `babu.work/tamal/`. The heading covers both
+("A city you can actually drive. A script you can finally read."), the header nav
+link reads "Off the clock" (the anchor stays `#drive`), and the `<noscript>`
+fallback and `sitemap.xml` carry the new entry. The cards sit in an auto-fit grid
+with a 420px minimum, so they stack on phones. The card's figures are counted
+from the Tamal repo: 94 lines in `extension/tamal.js`, 24 cases in `test.js`.
+
 ### 5. SEO fallback and structured data
 
 The bundle unpacks in the browser, so the raw HTML a non-rendering crawler sees
