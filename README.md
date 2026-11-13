@@ -18,12 +18,13 @@ the bundle from source and re-apply the metadata patch (see below).
 | `index.html` | The whole site, self-contained (~830 KB) |
 | `Babu-Somasundaram-Resume.pdf` | Linked from the hero and the contact section |
 | `og-card.png` | 1200×630 link-preview card (LinkedIn, Slack, X). Regenerate from `og.html` in the scratchpad if the copy or domain changes — the domain is drawn into the artwork, not just the meta tags. |
-| `favicon.svg` | Browser tab icon |
+| `favicon.svg` | Browser tab icon (outlined paths, no font dependency) |
+| `apple-touch-icon.png` | 180×180 home-screen icon for iOS |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is, no Jekyll processing |
 
 ## Patches applied on top of the bundle
 
-Six changes live on top of the generated file. **If you regenerate `index.html`,
+Eight changes live on top of the generated file. **If you regenerate `index.html`,
 re-apply all three** — otherwise each regression comes back silently.
 
 ### 1. Metadata (both heads)
@@ -119,6 +120,60 @@ Two things were tried and rejected, both with numbers:
 
 Roughly 240 ms of the remaining time-to-first-paint is parse and paint of the
 document and is not addressable from here.
+
+### 7. Variotype, the toolkit section and the Nov 2026 numbers
+
+- **DesignDuel → Variotype.** Same product and codebase, renamed. The product card, its link
+  (`variotype.com`), the Track-record point and the `<noscript>` paragraph all carry the new name;
+  nothing on the page says DesignDuel any more.
+- **Numbers recounted 13 Nov 2026** to match both résumé cuts and `linkedin-profile.md` in the
+  social-content workspace, which holds the ledger and how each row is counted. Evidence strip:
+  1,799 merges, 17,000+ tests, 215,000+ agent turns from 4,370+ prompts, 49B+ tokens. The AI-usage
+  figures are floors (two transcript windows, the gap between them not retained), hence the `+`
+  and the wording of the note under the strip. The revert figure is gone from the Method card.
+- **New section `03 — Toolkit`** (`#toolkit`) between Method and Track record: the engineering
+  toolkit every OGP Labs codebase runs on, with its own dated stat strip (counted from the
+  toolkit's git history, 24 Apr – 12 Nov 2026) and four cards. It is plain markup in the
+  template, not data, and follows the `h2 + div` eyebrow pattern so the mobile rule covers it. Its
+  card grid uses `minmax(min(100%,420px),1fr)`: 2 × 2 on desktop, one column on phones. Track
+  record, Stack, Off the clock and Contact renumber to 04–07, and a `Toolkit` link joins the nav.
+- `Babu-Somasundaram-Resume.pdf` is the CoFounder-Architect `-Portfolio` build (photo kept, email
+  and phone stripped).
+
+### 8. Ink theme with a Light / Dark / System switch
+
+- **Colours are CSS variables now.** Every hard-coded colour in the bundle (both documents) was
+  rewritten to `var(--bg)`, `var(--text)`, `var(--accent)`, `rgba(var(--ov-rgb),a)` and so on. The
+  values live in one `<style data-patch="theme">` block, injected into **both** heads (the outer
+  document for the loading screen, the template for the page). A new colour is one edit there.
+- **Light (ink) is the default:** paper `#f6f4ef`, ink `#16171a`, deep green `#1f5f4a`. **Dark ink:**
+  `#0f1312`, `#eef1ee`, mint `#7fd3ad`. Lime is gone, including from `favicon.svg`.
+- **The switch** sits in the header before "Work with me": Light / Dark / System. The choice is kept in
+  `localStorage` (`theme`); with nothing stored the page is Light. System follows
+  `prefers-color-scheme` live. It is wired by one delegated click listener in the theme `<script>`,
+  not by template handlers, because the unpacker swaps `<html>` and re-runs head scripts; the script
+  always reads `document.documentElement` fresh for that reason. The template has no `class`
+  attributes, so the switch is styled with `data-theme-switch` / `data-theme-set` selectors.
+- **Phones:** at <=640px the switch collapses to sun / moon / half-circle icons (CSS masks, with
+  `aria-label`s); at <=430px the header "Work with me" is hidden so the header stays one row (the
+  hero's "Start a conversation" is right below).
+- The SVG loading mark's `stroke` / `fill` attributes became `style` properties, because `var()`
+  does not work in SVG presentation attributes.
+- **Evidence strip numbers** are `clamp(28px,2.9vw,44px)`, `white-space:nowrap`, in a
+  `minmax(min(100%,170px),1fr)` grid. At the old size "215,000+" ran into "49B+"; checked clean at
+  1920, 1440, 1180, 900 and 500px.
+- **Photo** in the manifest is the cleaned headshot from `social-content/resume/headshot.jpg` (face
+  lifted, redness taken out of the whites of the eyes; original kept as `headshot-original.jpg`).
+- **Stack:** AI engineering adds direct OpenAI, Claude Platform and Google AI Studio (Gemini) APIs and
+  bring-your-own-key, all verified in the Consilo and Variotype code.
+- **`og-card.png` redrawn in ink** (1200×630): same layout as before, rendered in headless Chrome from
+  an HTML page using the bundle's own Space Grotesk / Instrument Serif / JetBrains Mono, with the
+  cleaned headshot. To redo it, rebuild that page (fonts come out of the manifest) and screenshot at
+  1200×630; keep `babu.work` drawn into the artwork.
+- **`favicon.svg` redrawn:** ink-green tile, paper "BS" as **outlined paths** taken from Space Grotesk
+  600 with fontTools, so it no longer depends on the visitor having the font installed (the old SVG
+  used `<text>` and fell back to Helvetica). **`apple-touch-icon.png`** (180×180, square; iOS rounds
+  it) is new and linked from both heads.
 
 ## Custom domain
 
