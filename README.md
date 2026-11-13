@@ -203,3 +203,14 @@ within a minute or two.
 Add a `CNAME` file containing the bare domain, point DNS at GitHub Pages, then
 enable **Enforce HTTPS** in Settings → Pages. Update the `og:url`, `canonical`,
 and `og:image` URLs in `index.html` to the new domain at the same time.
+
+### 9. Product descriptions follow the marketing pages (13 Nov 2026)
+
+- The Consilo and Variotype card copy, and their `<noscript>` paragraphs, now follow what
+  consilo.ai and variotype.com say about themselves. Consilo is "your AI growth team" (social media,
+  blog, SEO, PR and lead gen, getting named in ChatGPT, every piece approved first); the AI Council
+  and email/calendar agents are no longer mentioned. Variotype is "your AI product designer"
+  (studies users, gathers inspiration, several fully coded designs, up to five agents, reviewed for
+  brief fit, usability and craft). When either marketing page changes, change these with it, plus
+  both résumé cuts and `linkedin-profile.md` in the social-content workspace.
+- `Babu-Somasundaram-Resume.pdf` rebuilt with the same wording.
